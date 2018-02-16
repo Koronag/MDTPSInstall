@@ -14,18 +14,25 @@ function Install-MDT{
     #>
 
     param (
-        [string]$MdtMsiPath
+        [string]$MdtMsiPath,
+        [string]$DownloadFolder = "C:\temp",
+        [string]$InstallationFolder = "C:\temp"
     )
 
-    $MSIArguments = @(
+    $MSIArgumentsMdt = @(
     "/i"
     ('"{0}"' -f $MdtMsiPath)
     "/qn"
     "/norestart"
     "/L*v"
     $logFile
-)
 
-    Start-Process msiexec.exe -Wait -ArgumentList $MSIArgument
+)
+    #Install ADK
+
+    Invoke-WebRequest -Uri https://go.microsoft.com/fwlink/p/?linkid=859206 -OutFile $DownloadFolder\adksetup.exe
+    Start-Process 
+
+    Start-Process msiexec.exe -Wait -ArgumentList $MSIArgumentsMdt
     
 }
