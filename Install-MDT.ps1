@@ -14,27 +14,30 @@ function Install-MDT{
     #>
 
     param (
-        [string]$MDTMsiPath = "C:\temp\MicrosoftDeploymentToolkit_x64.msi",
-        [string]$ADKSetupFile = "C:\temp\adksetup.exe",
-        [string]$InstallationFolder = "C:\temp"
+
+        [string]$InstallationFolder = "C:\windows\temp"
     )
+    $MDTMsiPath = "$InstallationFolder\MicrosoftDeploymentToolkit_x64.msi"
+    $ADKSetupFile = "$InstallationFolder\adksetup.exe"
 
     $ADKDownloadPath = "https://go.microsoft.com/fwlink/p/?linkid=859206"
-    $MDTDownloadPath = "https://www.microsoft.com/en-us/download/confirmation.aspx?id=54259"
+    $MDTDownloadPath = "https://download.microsoft.com/download/3/3/9/339BE62D-B4B8-4956-B58D-73C4685FC492/MicrosoftDeploymentToolkit_x64.msi"
+    $LogFile = '{0}-{1}.log' -f $MDTMsiPath,$DataStamp
 
-    $ADKArguments = "'/quiet /features OptionID.DeploymentTools OptionID.WindowsPreinstallationEnvironment OptionID.ImagingAndConfigurationDesigner OptionID.ICDConfigurationDesigner'"
+    $ADKArguments = '/quiet /features OptionID.DeploymentTools OptionID.WindowsPreinstallationEnvironment OptionID.ImagingAndConfigurationDesigner OptionID.ICDConfigurationDesigner'
     $MSIArgumentsMdt = @(
     "/i"
-    ('"{0}"' -f $MdtMsiPath)
+    ('"{0}"' -f $MDTMSIPath)
     "/qn"
     "/norestart"
     "/L*v"
     $logFile
-)
+    )
+
     #Install ADK
     
     Invoke-WebRequest -Uri $ADKDownloadPath -OutFile $ADKSetupFile
-    Write-Progress -Activity "Installing MDT" -PercentComplete (100/10 * 4)
+    Write-Progress -Activity "Installing ADK" -PercentComplete (100/10 * 4)
     Start-Process -Wait $ADKSetupFile $ADKArguments
 
     #Install MDT
