@@ -1,7 +1,7 @@
 function Install-MDT{
     <#
     .SYNOPSIS
-    Short description
+    Test
     
     .DESCRIPTION
     Long description
